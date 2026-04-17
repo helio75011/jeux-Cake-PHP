@@ -14,7 +14,7 @@
  * @var \App\View\AppView $this
  */
 
-$cakeDescription = 'CakePHP: the rapid development php framework';
+$cakeDescription = 'Plateforme de Jeux';
 ?>
 <!DOCTYPE html>
 <html>
@@ -28,6 +28,33 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->meta('icon') ?>
 
     <?= $this->Html->css(['normalize.min', 'milligram.min', 'fonts', 'cake']) ?>
+    <style>
+        /* Styles de base pour nos jeux */
+        .game-board { margin: 20px 0; }
+        .color-R { background-color: #e74c3c; color: white;}
+        .color-B { background-color: #3498db; color: white;}
+        .color-V { background-color: #2ecc71; color: white;}
+        .color-J { background-color: #f1c40f; color: black;}
+        .color-O { background-color: #e67e22; color: white;}
+        .color-M { background-color: #795548; color: white;}
+        .color-box { display: inline-block; width: 30px; height: 30px; border-radius: 50%; text-align: center; line-height: 30px; margin: 2px; }
+        /* Filler grid */
+        .filler-grid td { width: 30px; height: 30px; padding: 0; border: 1px solid #fff; }
+        .filler-cell { display: block; width: 100%; height: 100%; }
+        .bg-red { background-color: #e74c3c; }
+        .bg-blue { background-color: #3498db; }
+        .bg-green { background-color: #2ecc71; }
+        .bg-yellow { background-color: #f1c40f; }
+        .bg-purple { background-color: #9b59b6; }
+        .bg-orange { background-color: #e67e22; }
+        /* Labyrinthe grid */
+        .maze-row { display: flex; font-family: monospace; white-space: pre; line-height: 1; }
+        .maze-cell { width: 20px; height: 20px; text-align: center; }
+        .maze-wall { background-color: #333; color: #333; }
+        .maze-path { background-color: #eee; }
+        .maze-player { background-color: #3498db; color: white; font-weight: bold; border-radius: 50%; }
+        .maze-end { background-color: #2ecc71; color: white; font-weight: bold; }
+    </style>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
@@ -36,11 +63,20 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <body>
     <nav class="top-nav">
         <div class="top-nav-title">
-            <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
+            <a href="<?= $this->Url->build(['controller' => 'Games', 'action' => 'index']) ?>"><span>Plateforme</span>Jeux</a>
         </div>
         <div class="top-nav-links">
-            <a target="_blank" rel="noopener" href="https://book.cakephp.org/5/">Documentation</a>
-            <a target="_blank" rel="noopener" href="https://api.cakephp.org/">API</a>
+            <a href="<?= $this->Url->build(['controller' => 'Games', 'action' => 'mastermind']) ?>">Mastermind</a>
+            <a href="<?= $this->Url->build(['controller' => 'Games', 'action' => 'filler']) ?>">Filler</a>
+            <a href="<?= $this->Url->build(['controller' => 'Games', 'action' => 'labyrinthe']) ?>">Labyrinthe</a>
+            
+            <?php if ($this->request->getAttribute('identity')): ?>
+                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'profile']) ?>">Mon Profil</a>
+                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']) ?>" style="color: #e74c3c;">Déconnexion</a>
+            <?php else: ?>
+                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>">Connexion</a>
+                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'register']) ?>">Inscription</a>
+            <?php endif; ?>
         </div>
     </nav>
     <main class="main">
